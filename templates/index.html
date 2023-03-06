@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+</head>
+<body style="font-family: sans-serif; font-size: 18px;">
+    <center>
+        <h1>Currency Converter</h1><br>
+        <form action="/convert" method="post">
+            <div style="font-size: 20px;">
+                Exchange:
+            </div><br>
+            <label for="amount">Amount</label>
+            <input type="number" name="amount" id="amount">
+            <select name="base-curr" id="base-curr">
+                {% for curr in currencies %}
+                    <option value="{{curr.name}}">{{curr.value}}</option>
+                {% endfor %}
+            </select>
+            <label for="to-curr">to:</label>
+            <select name="to-curr" id="to-curr">
+                {% for curr in currencies %}
+                    <option value="{{curr.name}}">{{curr.value}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Exchange">
+        </form><br>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div style="color: {{category}} " >{{ message }}</div>
+        {% endfor %}
+        <br>
+        <div style="font-size: 20px;">
+            History:
+        </div><br>
+        <a href="/history">Get Exchanges history</a>
+    </center>
+</body>
+</html>

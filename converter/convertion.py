@@ -24,7 +24,10 @@ class Convert:
     _base = 'USD'
     _rates = {}
     def __init__(self,base):
-        self._base = base.name
+        if type(base) == type(Currency):
+            self._base = base.name
+        else:
+            self._base = base
 
     def get_rates(self):
         self._rates = Connect.get_rates(self._base)
@@ -41,7 +44,7 @@ class Convert:
         
 
     def convert(self,amount,currency):
-            curr = session.query(Rates).filter_by(currency=currency.name).first()
+            curr = session.query(Rates).filter_by(currency=currency).first()
             return round(curr.rate*amount, 4)
     
     def exchange(self,amount,currency,commission_percent):
@@ -55,29 +58,53 @@ class Convert:
                    Transaction(
                     from_curr=self._base,
                     amount=amount,
-                    to_curr=currency.name,
+                    to_curr=currency,
                     exchanged=convert,
                     commission=commission_percent,
                     total=exchanged,
                     transact_date=date.today())
                     )
-            
          return {
               'converted':round(convert, 3),
-              'commision':round(commisioned, 3),
+              'commission':round(commisioned, 3),
               'received':round(exchanged, 3)
          }
     def get_db_rates(self):
         with Session.begin() as session:
-            rates = session.query(Rates.currency,Rates.rate,).all()
+            rates = session.query(Rates.currency,Rates.rate).all()
             print(rates)
 
+    def get_db_rate(self,rate):
+         with Session.begin() as session:
+              rate = session.query(Rates.currency,Rates.rate).where(rate==rate)
+              return rate
+         
     def get_transactions(self):
-         query = session.query(Transaction).all()
-         return session.execute(query)
-    
+         query = select(Transaction)
+         result = session.execute(query).all()
+         return parse_obj(result)
+       
     def delete_transaction_table(self):
          session.delete(Transaction)
 
     def delete_rates_table(self):
          session.delete(Rates)
+
+def parse_obj(obj):
+    obj_aslist = []
+
+    for item in obj:
+        it = str(item).strip('(,)')
+        item_list = []
+        for item in it.split(','):
+            d = to_dict(item)
+            item_list.append(d)
+        obj_aslist.append(item_list)
+    return obj_aslist
+
+
+def to_dict(st):
+     return st.split(':')
+
+
+

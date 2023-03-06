@@ -1,6 +1,7 @@
 from converter.currencies import Currency
-from sqlalchemy import create_engine, Column, Integer, Float, DateTime, Enum
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import create_engine, Column, Integer, Float, DateTime, Enum, inspect
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from datetime import date
 
 engine = create_engine("sqlite:///currency_converter.db", echo=True)
@@ -30,14 +31,9 @@ class Transaction(Base):
      transact_date = Column(DateTime(timezone=False))
     
      def __repr__(self):
-        return f'''<Transaction(
-            from_curr={self.from_curr},
-            amount={self.amount},
-            to_curr={self.to_curr},
-            exchanged={self.exchanged},
-            commission={self.commission},
-            total={self.total},
-            transact_date={date.today()})>'''
+        return f''' from_curr:{self.from_curr.name},amount:{self.amount},to_curr:{self.to_curr.name},exchanged:{round(self.exchanged, 3)},commission:{round(self.commission, 3)},total:{round(self.total, 3)},transact_date:{date.today()}'''
+
+
 
 Base.metadata.create_all(engine)
 session = sessionmaker(engine)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction history</title>
+</head>
+<body>
+    <h1>Transaction History</h1> <br>
+    {% for item in result %}
+        <ul>
+            {% for li in item %}
+                <li style="font-weight: bolder;">| Date: {{li['transact_date']}} </li>
+                <li style="color: red;">- Deposited:{{li['amount']}} {{li['from-curr']}}</li>
+                <li style="color: green;">+ Exchanged: {{li['exchanged']}} {{li['to-curr']}}</li>
+                <li style="color: red;">- Commission: {{li['commission']}} %</li>
+                <li style="color: green; font-weight: bolder;">+ Received: {{li['total']}} {{li['to-curr']}}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
