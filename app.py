@@ -14,7 +14,13 @@ def get_index():
 def get_history():
     curr = Convert('USD')
     transactions = curr.get_transactions()
-    return render_template('history.html', result=transactions)
+    data = []
+    for item in transactions:
+        di = []
+        for it in item:
+            di.append(it)
+        data.append(to_dict(di[1:]))
+    return render_template('history.html', result=data)
 
 @app.route('/convert', methods=['POST'])
 def convert():
@@ -28,5 +34,16 @@ def convert():
     else:
         flash('Please fill all the fields', 'red')
         return render_template('index.html', currencies=Currency)
+    
+def to_dict(item_list):
+    new_list = []
+    for item in item_list:
+        new_list.append(item.split(':'))
+    dict_list =[]
+    for item in new_list:
+        dict_list.append({item[0]:item[1]})
+    return dict_list
+
 
 app.run(debug=True, host='127.0.0.1', port=3000)
+

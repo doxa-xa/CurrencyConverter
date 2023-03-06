@@ -7,17 +7,17 @@
     <title>Transaction history</title>
 </head>
 <body>
-    <h1>Transaction History</h1> <br>
+    <h1 style=" margin: 0 25% 0 25% ;">Transaction History</h1> <br>
+    <div style="display: grid; grid-auto-rows: auto; margin-left: 25%; margin-right: 25%;">
     {% for item in result %}
-        <ul>
-            {% for li in item %}
-                <li style="font-weight: bolder;">| Date: {{li['transact_date']}} </li>
-                <li style="color: red;">- Deposited:{{li['amount']}} {{li['from-curr']}}</li>
-                <li style="color: green;">+ Exchanged: {{li['exchanged']}} {{li['to-curr']}}</li>
-                <li style="color: red;">- Commission: {{li['commission']}} %</li>
-                <li style="color: green; font-weight: bolder;">+ Received: {{li['total']}} {{li['to-curr']}}</li>
-            {% endfor %}
+        <ul style="background-color: lightgray;">
+            <li style="font-weight: bolder;">| Date: {{item[6]['transact_date']}} </li>
+            <li style="color: red;">- Deposited:{{item[1]['amount']}} {{item[0]['from_curr']}}</li>
+            <li style="color: green;">+ Exchanged: {{item[3]['exchanged']}} {{item[2]['to_curr']}}</li>
+            <li style="color: red;">- Commission: {{item[4]['commission']}} %</li>
+            <li style="border: 1px solid darkslategray; font-weight: bolder;">+ Received: {{item[5]['total']}} {{item[2]["to_curr"]}}</li>
         </ul>
     {% endfor %}
+    </div>
 </body>
 </html>

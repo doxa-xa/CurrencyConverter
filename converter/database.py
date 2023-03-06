@@ -31,7 +31,7 @@ class Transaction(Base):
      transact_date = Column(DateTime(timezone=False))
     
      def __repr__(self):
-        return f''' from_curr:{self.from_curr.name},amount:{self.amount},to_curr:{self.to_curr.name},exchanged:{round(self.exchanged, 3)},commission:{round(self.commission, 3)},total:{round(self.total, 3)},transact_date:{date.today()}'''
+        return f'''id:{self.transaction_id},from_curr:{self.from_curr.name},amount:{self.amount},to_curr:{self.to_curr.name},exchanged:{round(self.exchanged, 3)},commission:{round(self.commission, 3)},total:{round(self.total, 3)},transact_date:{date.today()}'''
 
 
 

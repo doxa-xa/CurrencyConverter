@@ -97,14 +97,10 @@ def parse_obj(obj):
         it = str(item).strip('(,)')
         item_list = []
         for item in it.split(','):
-            d = to_dict(item)
-            item_list.append(d)
+            item_list.append(item)
         obj_aslist.append(item_list)
     return obj_aslist
 
-
-def to_dict(st):
-     return st.split(':')
 
 
 
